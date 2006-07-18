@@ -1,4 +1,8 @@
 Revision history for Perl extension Time::Duration::Parse
 
+0.02  Tue Jul 18 16:58:53 JST 2006
+        - Accept upper-case timespec like '3 Seconds' as well.
+        - Unified exception format
+
 0.01  Tue Jul 18 02:29:01 2006
 	- original version

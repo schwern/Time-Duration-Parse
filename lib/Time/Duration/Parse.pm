@@ -1,7 +1,7 @@
 package Time::Duration::Parse;
 
 use strict;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Carp;
 use Exporter::Lite;
@@ -23,20 +23,22 @@ sub parse_duration {
 
     my $duration = 0;
     while ($timespec =~ s/^\s*(\d+)\s+(\w+)(?:\s*(?:,|and)\s*)*//i) {
-        if (my $unit = $_Expiration_Units{$2}) {
-            $duration += $1 * $unit;
+        my($amount, $unit) = ($1, $2);
+        $unit = lc($unit) unless length($unit) == 1;
+
+        if (my $value = $_Expiration_Units{$unit}) {
+            $duration += $amount * $value;
         } else {
             Carp::croak "Unknown timespec: $1 $2";
         }
     }
 
     if ($timespec) {
-        Carp::croak "timespec with cruft leftover: $timespec";
+        Carp::croak "Unknown timespec: $timespec";
     }
 
     return $duration;
 }
-
 
 1;
 __END__
@@ -74,15 +76,8 @@ and is roundtrip safe. So, the following is always true.
   $seconds = parse_duration($string);
 
 Parses duration string and returns seconds. When it encounters an
-error in a given string, it dies an exception saying:
-
-=over 8
-
-=item Unknown timespec: %d %s
-
-=item timespec with cruft leftover: %s
-
-=back
+error in a given string, it dies an exception saying "Unknown
+timespec: blah blah blah". This function is exported by default.
 
 =head1 AUTHOR
 
