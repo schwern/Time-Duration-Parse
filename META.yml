@@ -1,0 +1,16 @@
+abstract: Parse string that represents time duration
+author: Tatsuhiko Miyagawa <miyagawa@bulknews.net>
+build_requires: 
+  Test::More: 0
+  Time::Duration: 0
+distribution_type: module
+generated_by: Module::Install version 0.61
+license: perl
+name: Time-Duration-Parse
+no_index: 
+  directory: 
+    - inc
+    - t
+requires: 
+  Exporter::Lite: 0
+version: 0.01
