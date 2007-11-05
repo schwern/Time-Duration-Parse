@@ -2,7 +2,7 @@
 
 package Time::Duration;
 # POD is at the end.
-$VERSION = '1.03';
+$VERSION = '1.04';
 require Exporter;
 @ISA = ('Exporter');
 @EXPORT = qw( later later_exact earlier earlier_exact

@@ -1,7 +1,7 @@
 package Time::Duration::Parse;
 
 use strict;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use Carp;
 use Exporter::Lite;
@@ -9,24 +9,28 @@ our @EXPORT = qw( parse_duration );
 
 # This map is taken from Cache and Cache::Cache
 # map of expiration formats to their respective time in seconds
-my %_Expiration_Units = ( map(($_,             1), qw(s second seconds sec)),
-                          map(($_,            60), qw(m minute minutes min)),
-                          map(($_,         60*60), qw(h hour hours)),
-                          map(($_,      60*60*24), qw(d day days)),
-                          map(($_,    60*60*24*7), qw(w week weeks)),
-                          map(($_,   60*60*24*30), qw(M month months)),
-                          map(($_,  60*60*24*365), qw(y year years)) );
+my %Units = ( map(($_,             1), qw(s second seconds sec secs)),
+              map(($_,            60), qw(m minute minutes min mins)),
+              map(($_,         60*60), qw(h hr hour hours)),
+              map(($_,      60*60*24), qw(d day days)),
+              map(($_,    60*60*24*7), qw(w week weeks)),
+              map(($_,   60*60*24*30), qw(M month months)),
+              map(($_,  60*60*24*365), qw(y year years)) );
 
-# aren't there any CPAN module that does this?
 sub parse_duration {
     my $timespec = shift;
 
+    # Treat plain integer as number of seconds
+    if ($timespec =~ /^-?\d+$/) {
+        return $timespec;
+    }
+
     my $duration = 0;
-    while ($timespec =~ s/^\s*(\d+)\s+(\w+)(?:\s*(?:,|and)\s*)*//i) {
+    while ($timespec =~ s/^\s*(-?\d+)\s*(\w+)(?:\s*(?:,|and)\s*)*//i) {
         my($amount, $unit) = ($1, $2);
         $unit = lc($unit) unless length($unit) == 1;
 
-        if (my $value = $_Expiration_Units{$unit}) {
+        if (my $value = $Units{$unit}) {
             $duration += $amount * $value;
         } else {
             Carp::croak "Unknown timespec: $1 $2";
@@ -93,6 +97,6 @@ CPAN.
 
 =head1 SEE ALSO
 
-L<Date::Manip>, L<http://use.perl.org/~miyagawa/journal/30310>
+L<Date::Manip>, L<DateTime::Format::Duration>, L<http://use.perl.org/~miyagawa/journal/30310>
 
 =cut
