@@ -1,7 +1,7 @@
 package Time::Duration::Parse;
 
 use strict;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Carp;
 use Exporter::Lite;
@@ -26,7 +26,7 @@ sub parse_duration {
     }
 
     my $duration = 0;
-    while ($timespec =~ s/^\s*(-?\d+)\s*(\w+)(?:\s*(?:,|and)\s*)*//i) {
+    while ($timespec =~ s/^\s*(-?\d+)\s*([a-zA-Z]+)(?:\s*(?:,|and)\s*)*//i) {
         my($amount, $unit) = ($1, $2);
         $unit = lc($unit) unless length($unit) == 1;
 

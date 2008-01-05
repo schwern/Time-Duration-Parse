@@ -13,4 +13,4 @@ no_index:
     - t
 requires: 
   Exporter::Lite: 0
-version: 0.03
+version: 0.04
