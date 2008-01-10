@@ -1,7 +1,7 @@
 package Time::Duration::Parse;
 
 use strict;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Carp;
 use Exporter::Lite;
@@ -25,6 +25,10 @@ sub parse_duration {
         return $timespec;
     }
 
+    # Convert hh:mm(:ss)? to something we understand
+    $timespec =~ s/\b(\d+):(\d\d):(\d\d)\b/$1h $2m $3s/g;
+    $timespec =~ s/\b(\d+):(\d\d)\b/$1h $2m/g;
+
     my $duration = 0;
     while ($timespec =~ s/^\s*(-?\d+)\s*([a-zA-Z]+)(?:\s*(?:,|and)\s*)*//i) {
         my($amount, $unit) = ($1, $2);
@@ -37,7 +41,7 @@ sub parse_duration {
         }
     }
 
-    if ($timespec) {
+    if ($timespec =~ /\S/) {
         Carp::croak "Unknown timespec: $timespec";
     }
 
