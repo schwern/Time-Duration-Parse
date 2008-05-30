@@ -1,7 +1,7 @@
 package Time::Duration::Parse;
 
 use strict;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Carp;
 use Exporter::Lite;
@@ -20,9 +20,9 @@ my %Units = ( map(($_,             1), qw(s second seconds sec secs)),
 sub parse_duration {
     my $timespec = shift;
 
-    # Treat plain integer as number of seconds
-    if ($timespec =~ /^-?\d+$/) {
-        return $timespec;
+    # Treat a plain number as a number of seconds (and parse it later)
+    if ($timespec =~ /^\s*(-?\d+(?:[.,]\d+)?)\s*$/) {
+        $timespec = "$1s";
     }
 
     # Convert hh:mm(:ss)? to something we understand
@@ -30,11 +30,12 @@ sub parse_duration {
     $timespec =~ s/\b(\d+):(\d\d)\b/$1h $2m/g;
 
     my $duration = 0;
-    while ($timespec =~ s/^\s*(-?\d+)\s*([a-zA-Z]+)(?:\s*(?:,|and)\s*)*//i) {
+    while ($timespec =~ s/^\s*(-?\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)(?:\s*(?:,|and)\s*)*//i) {
         my($amount, $unit) = ($1, $2);
         $unit = lc($unit) unless length($unit) == 1;
 
         if (my $value = $Units{$unit}) {
+            $amount =~ s/,/./;
             $duration += $amount * $value;
         } else {
             Carp::croak "Unknown timespec: $1 $2";
@@ -45,7 +46,7 @@ sub parse_duration {
         Carp::croak "Unknown timespec: $timespec";
     }
 
-    return $duration;
+    return sprintf "%.0f", $duration;
 }
 
 1;

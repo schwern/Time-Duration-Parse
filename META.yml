@@ -1,11 +1,16 @@
+--- 
 abstract: Parse string that represents time duration
-author: Tatsuhiko Miyagawa <miyagawa@bulknews.net>
+author: 
+  - Tatsuhiko Miyagawa <miyagawa@bulknews.net>
 build_requires: 
   Test::More: 0
   Time::Duration: 0
 distribution_type: module
-generated_by: Module::Install version 0.64
+generated_by: Module::Install version 0.68
 license: perl
+meta-spec: 
+  url: http://module-build.sourceforge.net/META-spec-v1.3.html
+  version: 1.3
 name: Time-Duration-Parse
 no_index: 
   directory: 
@@ -13,4 +18,4 @@ no_index:
     - t
 requires: 
   Exporter::Lite: 0
-version: 0.05
+version: 0.06

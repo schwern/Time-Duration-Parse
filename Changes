@@ -1,5 +1,8 @@
 Revision history for Perl extension Time::Duration::Parse
 
+0.06  Fri May 30 16:04:12 PDT 2008
+        - Accept 1.5h (Thanks to Thomas Sibley)
+
 0.05  Thu Jan 10 12:05:26 PST 2008
         - Accept hh:mm(:ss) as a format.
         - Relaxed to handle trailing spaces.

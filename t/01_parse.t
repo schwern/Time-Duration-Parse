@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 22;
+use Test::More tests => 37;
 
 use Time::Duration::Parse;
 
@@ -36,6 +36,23 @@ ok_duration '1d -24:00', 0;
 ok_duration '2:03', 7380;
 
 ok_duration ' 1s   ', 1;
+ok_duration '   1  ', 1;
+ok_duration '  1.3 ', 1;
+
+ok_duration '1.5h', 5400;
+ok_duration '1,5h', 5400;
+ok_duration '1.5h 30m', 7200;
+ok_duration '1.9s', 2;          # Check rounding
+ok_duration '1.3s', 1;
+ok_duration '1.3', 1;
+ok_duration '1.9', 2;
+
+ok_duration '1h,30m, 3s', 5403;
+ok_duration '1h and 30m,3s', 5403;
+ok_duration '1,5h, 3s', 5403;
+ok_duration '1,5h and 3s', 5403;
+ok_duration '1.5h, 3s', 5403;
+ok_duration '1.5h and 3s', 5403;
 
 fail_duration '3 sss';
 fail_duration '6 minutes and 3 sss';
