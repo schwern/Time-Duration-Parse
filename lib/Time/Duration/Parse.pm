@@ -21,7 +21,7 @@ sub parse_duration {
     my $timespec = shift;
 
     # Treat a plain number as a number of seconds (and parse it later)
-    if ($timespec =~ /^\s*(-?\d+(?:[.,]\d+)?)\s*$/) {
+    if ($timespec =~ /^\s*([-+]?\d+(?:[.,]\d+)?)\s*$/) {
         $timespec = "$1s";
     }
 
@@ -30,7 +30,7 @@ sub parse_duration {
     $timespec =~ s/\b(\d+):(\d\d)\b/$1h $2m/g;
 
     my $duration = 0;
-    while ($timespec =~ s/^\s*(-?\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)(?:\s*(?:,|and)\s*)*//i) {
+    while ($timespec =~ s/^\s*([-+]?\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)(?:\s*(?:,|and)\s*)*//i) {
         my($amount, $unit) = ($1, $2);
         $unit = lc($unit) unless length($unit) == 1;
 
